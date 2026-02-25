@@ -14,9 +14,7 @@ const protectedRoute = () => {
     }
 
   return isAuthenticated ? (
-    <AppLayout>
         <Outlet />
-    </AppLayout>
   ) : (
     <Navigate to="/login" replace />
   )
