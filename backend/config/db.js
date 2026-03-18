@@ -7,5 +7,5 @@ console.log(`MongoDB Connected: ${conn.connection.host}`);
 console.error(`Error connecting to MongoDB: ${error.message}`);
 process.exit(1);
 }
-}; I
+};
 export default connectDB;
