@@ -1,4 +1,4 @@
-import Document from './models/Document.js';
+import Document from '../models/Document.js';
 import FlashCard from '../models/FlashCard.js';
 import Quiz from '../models/Quiz.js';
 import ChatHistory from '../models/ChatHistory.js';

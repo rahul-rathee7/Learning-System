@@ -4,7 +4,7 @@ import Quiz from '../models/Quiz.js'
 import { extractTextFromPDF } from '../utils/pdfParser.js'
 import { chunkText } from '../utils/textChunker.js'
 import fs from 'fs/promises'
-import mognoose from 'mongoose'
+import mongoose from 'mongoose'
 
 export const uploadDocument = async (req, res, next) => {
     try {
@@ -128,7 +128,27 @@ export const getDocuments = async (req, res, next) => {
 
 export const getDocument = async (req, res, next) => {
     try {
+        const document = await Document.findOne({
+            _id: req.params.id,
+            userId: req.user._id
+        })
 
+        if(!document) {
+            return res.status(404).json({
+                success: false,
+                error: 'Document not found',
+                statusCode: 404
+            })
+        }
+
+        const flashcardCount = await Flashcard.countDocuments({documentId: document._id, userId: req.user._id})
+        const quizCount = await Quiz.countDocuments({documentId: document._id, userId: req.user._id})
+        
+        document.lastAccessed = Date.now();
+        await document.save();
+
+        const documentData = document.toObject();
+        documentData.flashcardCount = flash
     }
     catch (error) {
         next(error)

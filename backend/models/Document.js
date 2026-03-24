@@ -16,38 +16,38 @@ const documentSchema = new mongoose.Schema({
     required: true
   },
   filePath: {
-type: String,
-required: true
-},
-fileSize: {
-type: Number,
-required: true
-},
-extractedText: {
-  type: String,
-  default: ''
-},
-chunks: [{
-  content: {
     type: String,
     required: true
+  },
+  fileSize: {
+    type: Number,
+    required: true
+  },
+  extractedText: {
+    type: String,
+    default: ''
+  },
+  chunks: [{
+    content: {
+      type: String,
+      required: true
+    }
+  }],
+  uploadDate: {
+    type: Date,
+    default: Date.now
+  },
+  lastAccessed: {
+    type: Date,
+    default: Date.now
+  },
+  status: {
+    type: String,
+    enum: ['processing', 'completed', 'failed'],
+    default: 'processing'
   }
-}],
-uploadDate: {
-  type: Date,
-  default: Date.now
-},
-lastAccessed: {
-  type: Date,
-  default: Date.now
-},
-status: {
-  type: String,
-  enum: ['processing', 'completed', 'failed'],
-  default: 'processing'
-}
 }, {
-    timestamps: true
+  timestamps: true
 });
 
 documentSchema.index({ userId: 1, title: 1 }, { unique: true });
