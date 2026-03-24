@@ -15,8 +15,7 @@ import './App.css'
 import FlashcardsListPage from './pages/Flashcards/FlashcardsListPage.jsx'
 
 function App() {
-  const isAuthenticated = true
-  const loading = false
+  const { isAuthenticated, loading } = useAuth();
 
   if(loading) {
     return (
