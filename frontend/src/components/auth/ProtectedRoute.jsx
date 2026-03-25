@@ -1,9 +1,10 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
+import AppLayout from '../layout/AppLayout'
+import { useAuth } from '../../context/AuthContext'
 
 const protectedRoute = () => {
-    const isAuthenticated = true
-    const loading = false
+    const { isAuthenticated, loading } = useAuth();
 
     if(loading) {
         return (
@@ -14,7 +15,9 @@ const protectedRoute = () => {
     }
 
   return isAuthenticated ? (
-        <Outlet />
+    <AppLayout>
+      <Outlet />
+    </AppLayout>
   ) : (
     <Navigate to="/login" replace />
   )
