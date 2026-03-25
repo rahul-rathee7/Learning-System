@@ -38,9 +38,10 @@ export const getAllFlashcardSets = async (req, res, next) => {
 export const reviewFlashcard = async (req, res, next) => {
     try {
         const flashcardSet = await FlashCard.findOne({
-            'cards_id': req.params.cardId,
+            'cards._id': req.params.cardId,
             userId: req.user._id
         });
+        console.log(flashcardSet)
 
         if (!flashcardSet) {
             return res.status(404).json({
@@ -49,7 +50,7 @@ export const reviewFlashcard = async (req, res, next) => {
                 statusCode: 404
             })
         }
-        const cardIndex = flashcards.cards.findIndex(card => card._id.toString() === req.params.cardId);
+        const cardIndex = flashcardSet.cards.findIndex(card => card._id.toString() === req.params.cardId);
 
         if (cardIndex === -1) {
             return res.status(404).json({
@@ -78,7 +79,7 @@ export const reviewFlashcard = async (req, res, next) => {
 export const toggleStarFlashcard = async (req, res, next) => {
     try {
         const flashcardSet = await FlashCard.findOne({
-            'cards_id': req.params.cardId,
+            'cards._id': req.params.cardId,
             userId: req.user._id
         });
 
@@ -90,7 +91,7 @@ export const toggleStarFlashcard = async (req, res, next) => {
             })
         }
 
-        const cardIndex = flashcards.cards.findIndex(card => card._id.toString() === req.params.cardId);
+        const cardIndex = flashcardSet.cards.findIndex(card => card._id.toString() === req.params.cardId);
 
         if (cardIndex === -1) {
             return res.status(404).json({
@@ -117,9 +118,10 @@ export const toggleStarFlashcard = async (req, res, next) => {
 export const deleteFlashcardSet = async (req, res, next) => {
     try {
         const flashcardSet = await FlashCard.findOne({
-            _id: req.params.cardId,
+            _id: req.params.id,
             userId: req.user._id
         });
+        console.log(flashcardSet);
 
         if (!flashcardSet) {
             return res.status(404).json({

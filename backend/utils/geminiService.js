@@ -34,7 +34,7 @@ export const generateFlashcards = async (text, count = 10) => {
         const cards = generatedText.split('---').filter(c => c.trim());
 
         for (const card of cards) {
-            const lines = cards.trim().split('\n');
+            const lines = card.trim().split('\n');
             let question = '', answer = '', difficulty = 'medium';
 
             for (const line of lines) {
@@ -43,7 +43,7 @@ export const generateFlashcards = async (text, count = 10) => {
                 } else if (line.startsWith('A:')) {
                     answer = line.substring(2).trim();
                 } else if (line.startsWith('D:')) {
-                    const diff = line.substring(2).trim().tolowerCase();
+                    const diff = line.substring(2).trim().toLowerCase();
                     if (['easy', 'medium', 'hard'].includes(diff)) {
                         difficulty = diff;
                     }
@@ -56,7 +56,7 @@ export const generateFlashcards = async (text, count = 10) => {
         return flashcards.slice(0, count);
     } catch (error) {
         console.error('Gemini API error: ', error);
-        throw new error('Failed to generate flashcards');
+        throw new Error('Failed to generate flashcards');
     }
 };
 
@@ -94,16 +94,16 @@ export const generateQuiz = async (text, numQuestions = 5) => {
 
         for(const line of lines){
             const trimmed = line.trim();
-            if(trimmed.substring('Q:')){
+            if(trimmed.startsWith('Q:')){
                 question = trimmed.substring(2).trim();
-            } else if(trimmed.match('/^0\d:/')) {
+            } else if(trimmed.startsWith('C:')) {
                 options.push(trimmed.substring(2).trim());
             } else if(trimmed.match('C:')) {
                 correctAnswer = trimmed.substring(2).trim();
             } else if(trimmed.match('E:')) {
                 explanation = trimmed.substring(2).trim();
             } else if(trimmed.match('D:')) {
-                const diff = trimmed.substring(2).trim().tolowerCase();
+                const diff = trimmed.substring(2).trim().toLowerCase();
                 if(['easy', 'medium', 'hard'].includes(diff)) {
                     difficulty = diff;
                 }
@@ -118,7 +118,7 @@ export const generateQuiz = async (text, numQuestions = 5) => {
     return questions.slice(0, numQuestions);
     } catch (error) {
         console.error('Gemini API error: ', error);
-        throw new error('Failed to generate quiz');
+        throw new Error('Failed to generate quiz');
     }
 };
 
@@ -135,11 +135,11 @@ export const generateSummary = async(text) => {
             contents: prompt,
         });
 
-        const generatedText = response.text;
+        const generatedText = response.text || "";
         return generatedText;
     } catch (error) {
         console.error('Gemini API error: ', error);
-        throw new error('Failed to generate summary');
+        throw new Error('Failed to generate summary');
     }
 }
 
@@ -167,11 +167,11 @@ export const chatWithContext = async (question, chunks) => {
         return generatedText;
     } catch (error) {
         console.error('Gemini API error: ', error);
-        throw new error('Failed to generate chat');
+        throw new Error('Failed to generate chat');
     }
 };
 
-export const explainConcept = async (req, res, next) => {
+export const explainConcept = async (concept, context) => {
     const prompt = `Explain the concept of "${concept}" based on the following context.
     Provide a clear, educational explanation that's easy to understand.
     Include examples if relevant.
@@ -189,6 +189,6 @@ export const explainConcept = async (req, res, next) => {
         return generatedText;
     } catch (error) {
         console.error('Gemini API error: ', error);
-        throw new error('Failed to explain concept');
+        throw new Error('Failed to explain concept');
     }
 };
