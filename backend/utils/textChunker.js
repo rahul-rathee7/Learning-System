@@ -157,11 +157,7 @@ export const findRelevantChunks = (chunks, query, maxChunks = 3) => {
         if (uniqueMatches > 1) {
             score += uniqueMatches * 2;
         }
-
-        // Normalize by size
         const normalizedScore = score / Math.sqrt(wordCount);
-
-        // Small position bonus (earlier chunks slightly preferred)
         const positionBonus = 1 - (index / chunks.length) * 0.1;
 
         return {
