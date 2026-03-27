@@ -72,7 +72,7 @@ export const generateQuiz = async (text, numQuestions = 5) => {
     E: [Brief explanation]
     D: [Difficult level: easy, medium, or hard]
 
-    Seperate questions with "---"
+    Separate questions with "---"
 
     Text:
     ${text.substring(0, 15000)}`;
@@ -88,34 +88,51 @@ export const generateQuiz = async (text, numQuestions = 5) => {
         const questions = [];
         const questionBlocks = generatedText.split('---').filter(q => q.trim());
 
-        for(const block of questionBlocks) {
+        for (const block of questionBlocks) {
             const lines = block.trim().split('\n');
-            let question = '', options = [], correctAnswer = '', explanation = '', difficulty = 'medium';
 
-        for(const line of lines){
-            const trimmed = line.trim();
-            if(trimmed.startsWith('Q:')){
-                question = trimmed.substring(2).trim();
-            } else if(trimmed.startsWith('C:')) {
-                options.push(trimmed.substring(2).trim());
-            } else if(trimmed.match('C:')) {
-                correctAnswer = trimmed.substring(2).trim();
-            } else if(trimmed.match('E:')) {
-                explanation = trimmed.substring(2).trim();
-            } else if(trimmed.match('D:')) {
-                const diff = trimmed.substring(2).trim().toLowerCase();
-                if(['easy', 'medium', 'hard'].includes(diff)) {
-                    difficulty = diff;
+            let question = '';
+            let options = [];
+            let correctAnswer = '';
+            let explanation = '';
+            let difficulty = 'medium';
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+
+                if (trimmed.startsWith('Q:')) {
+                    question = trimmed.substring(2).trim();
+                } 
+                else if (/^0[1-4]:/.test(trimmed)) {
+                    options.push(trimmed.substring(3).trim());
+                } 
+                else if (trimmed.startsWith('C:')) {
+                    correctAnswer = trimmed.substring(2).trim();
+                } 
+                else if (trimmed.startsWith('E:')) {
+                    explanation = trimmed.substring(2).trim();
+                } 
+                else if (trimmed.startsWith('D:')) {
+                    const diff = trimmed.substring(2).trim().toLowerCase();
+                    if (['easy', 'medium', 'hard'].includes(diff)) {
+                        difficulty = diff;
+                    }
                 }
+            }
+
+            if (question && options.length === 4 && correctAnswer) {
+                questions.push({
+                    question,
+                    options,
+                    correctAnswer,
+                    explanation,
+                    difficulty
+                });
             }
         }
 
-        if(question && options.length === 4 && correctAnswer){
-            questions.push({question, options, correctAnswer, explanation, difficulty});
-        }
-    }
+        return questions.slice(0, numQuestions);
 
-    return questions.slice(0, numQuestions);
     } catch (error) {
         console.error('Gemini API error: ', error);
         throw new Error('Failed to generate quiz');

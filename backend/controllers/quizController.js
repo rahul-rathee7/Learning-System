@@ -152,12 +152,12 @@ export const getQuizResults = async (req, res, next) => {
 
             return {
                 questionIndex: index,
-                question: questions.question,
-                options: questions.options,
-                correctAnswer: questions.correctAnswer,
+                question: question.question,
+                options: question.options,
+                correctAnswer: question.correctAnswer,
                 selectedAnswer: userAnswer?.selectedAnswer || null,
                 isCorrect: userAnswer?.isCorrect || false,
-                explanation: questions.explanation,
+                explanation: question.explanation,
             }
         });
 

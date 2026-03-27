@@ -13,6 +13,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import './App.css'
 import FlashcardsListPage from './pages/Flashcards/FlashcardsListPage.jsx'
+import { useAuth } from './context/AuthContext.jsx'
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
