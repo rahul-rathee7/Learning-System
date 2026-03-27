@@ -118,7 +118,7 @@ const DocumentListPage = () => {
                         </p>
                         <button
                             onClick={() => setIsUploadModalOpen(true)}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-emrald-500 to-teal-500 hover:from-emrald-600 hover:to-teal-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-emrald-500/25 hover:shadow-xl hover:shadow-emrald-500/30 active:scale[0.98]"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 active:scale[0.98]"
                         >
                             <Plus className="w-4 h-4" strokeWidth={2.5} />
                             Upload Document
@@ -195,14 +195,14 @@ const DocumentListPage = () => {
                                     value={uploadTitle}
                                     onChange={(e) => setUploadTitle(e.target.value)}
                                     required
-                                    className="w-full h-12 px-4 border-2 border-slate-200 rounded-xl bg-slate-50/50 text-slate-900 placeholder-slate-400 text-sm font-medium transition-all duration-200 focus:outline-none focus:border-emrald-500 focus:bg-white focus:shadow-lg focus:shadow-emrald-500/10"
+                                    className="w-full h-12 px-4 border-2 border-slate-200 rounded-xl bg-slate-50/50 text-slate-900 placeholder-slate-400 text-sm font-medium transition-all duration-200 focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
                                     placeholder="e.g., React Interview Prep" />
                             </div>
                             <div className="space-y-2" >
                                 <label className="block text-xs font-semibold text-slate-700 tracking-wide uppercase">
                                     PDF File
                                 </label>
-                                <div className="relative border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/50 hover:border-emrald-400 hover:bg-emrald-50/30 transition-all duration-200">
+                                <div className="relative border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/50 hover:border-emerald-400 hover:bg-emerald-50/30 transition-all duration-200">
                                     <input
                                         type="file"
                                         id="file-upload"
@@ -212,17 +212,17 @@ const DocumentListPage = () => {
                                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                     />
                                     <div className="flex flex-col items-center justify-center px-10 py-6">
-                                        <div className="w-14 h-14 rounded-xl bg-linear-to-br from-emrald-100 to-teal-100 flex items-center justify-center mb-4">
-                                            <Upload className="w-7 h-7 text-emrald-600" strokeWidth={2} />
+                                        <div className="w-14 h-14 rounded-xl bg-linear-to-br from-emerald-100 to-teal-100 flex items-center justify-center mb-4">
+                                            <Upload className="w-7 h-7 text-emerald-600" strokeWidth={2} />
                                         </div>
                                         <p className="text-sm font-medium text-slate-700 mb-1">
                                             {uploadFile ? (
-                                                <span className="text-emrald-600">
+                                                <span className="text-emerald-600">
                                                     {uploadFile.name}
                                                 </span>
                                             ) : (
                                                 <>
-                                                    <span className="text-emrald-600">Click to upload</span>{""}
+                                                    <span className="text-emerald-600">Click to upload</span>{""}
                                                     or drag and drop
                                                 </>
                                             )}
@@ -242,7 +242,7 @@ const DocumentListPage = () => {
                                 <button
                                     type="submit"
                                     disabled={uploading}
-                                    className="flex-1 h-11 px-4 bg-linear-to-r from-emrald-500 to-teal-500 hover:from-emrald-600 hover:to-teal-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-emrald-500/25 disabled:opacity-50 disabled:cursor-not-allowed active:scale[0.98]">
+                                    className="flex-1 h-11 px-4 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-emerald-500/25 disabled:opacity-50 disabled:cursor-not-allowed active:scale[0.98]">
                                     {uploading ? (
                                         <span className="flex items-center justify-center gap-2">
                                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
