@@ -160,7 +160,7 @@ export const chatWithContext = async (question, chunks) => {
 
     try{
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "models/gemini-2.5-flash",
             contents: prompt,
         });
         const generatedText = response.text;
@@ -181,7 +181,7 @@ export const explainConcept = async (concept, context) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "models/gemini-2.5-flash",
             contents: prompt,
         });
 
