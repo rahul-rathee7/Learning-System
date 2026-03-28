@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Spinner from "../../components/common/Spinner";
-import progressService from "../../services/progessService";
+import progressService from "../../services/progressService";
 import toast from "react-hot-toast";
 import { FileText, BookOpen, BrainCircuit, TrendingUp, Clock } from "lucide-react";
 
@@ -32,7 +32,7 @@ const DashboardPage = () => {
 
   if (!dashboardData || !dashboardData.overview) {
     return (
-      <div className="min-h-screen bg-gradient-to-br, from-slate-50 via-white to-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-100 mb-4">
             <TrendingUp className="w-8 h-8 text-slate-400" />
@@ -134,7 +134,7 @@ const DashboardPage = () => {
                 }))
               ]
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-                .map((activity, index) => {
+                .map((activity, index) => (
                   <div
                     key={activity.id || index}
                     className="group flex items-center justify-between p-4 rounded-xl bg-slate-50/50 border border-slate-200/60 hover:bg-white hover:border-slate-300/60 hover:shadow-md transition-all duration-200"
@@ -163,7 +163,7 @@ const DashboardPage = () => {
                       </a>
                     )}
                   </div>
-                })}
+                ))}
             </div>
           ) : (
             <div className="text-center py-12">
