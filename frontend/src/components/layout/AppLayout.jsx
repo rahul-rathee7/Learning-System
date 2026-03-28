@@ -1,22 +1,25 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import '../../App.css';
+import React, { useState } from "react";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
 
-// You can import your layout components here, e.g., Navbar, Sidebar, Footer
-// import Navbar from '../common/Navbar';
-// import Sidebar from '../common/Sidebar';
+const AppLayout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-const AppLayout = () => {
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="app-layout">
-      {/* <Navbar /> */}
-      {/* <Sidebar /> */}
-      <main className="main-content">
-        <Outlet />
-      </main>
-      {/* <Footer /> */}
+    <div className="flex h-screen bg-neutral-50 text-neutral-900">
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header toggleSidebar={toggleSidebar} />
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
+          {children}
+        </main>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default AppLayout;
+export default AppLayout
