@@ -42,15 +42,17 @@ export const getDashboard = async (req, res, next) => {
         res.status(200).json({
             success: true,
             data: {
-                totalDocuments,
-                totalFlashcardSets,
-                totalFlashcards,
-                reviewedFlashcards,
-                starredFlashcards,
-                totalQuizzes,
-                completedQuizzes,
-                averageScore,
-                studyStreak
+                overview: {
+                    totalDocuments,
+                    totalFlashcardSets,
+                    totalFlashcards,
+                    reviewedFlashcards,
+                    starredFlashcards,
+                    totalQuizzes,
+                    completedQuizzes,
+                    averageScore,
+                    studyStreak
+                }
             },
             recentActivity: {
                 documents: recentDocuments,

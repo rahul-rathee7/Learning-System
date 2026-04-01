@@ -18,6 +18,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         { to: '/flashcards', icon: BookOpen, text: 'Flashcards' },
         { to: '/profile', icon: User, text: 'Profile' }
     ];
+    
 
     return <>
         <div
@@ -47,17 +48,17 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
             {/*Navigation*/}
             <nav className='flex-1 px-3 py-6 space-y-1.5'>
-                {navLinks.map((Link) => {
+                {navLinks.length > 0 && navLinks.map((link) => (
                     <NavLink
-                        key={Link.to}
-                        to={Link.to}
+                        key={link.to}
+                        to={link.to}
                         onClick={toggleSidebar}
-                        className={({ Activate }) =>
+                        className={({ isActive }) =>
                             `group flex items-center gap-3 px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 
                         ${isActive ? 'bg-linear-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/25'
                                 : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                             }`}>
-                        {({ isActive }) => {
+                        {({ isActive }) => (
                             <>
                                 <link.icon
                                     size={18}
@@ -67,9 +68,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                                 />
                                 {link.text}
                             </>
-                        }}
+                        )}
                     </NavLink>
-                })}
+                ))}
             </nav>
 
             {/*Logout Section*/}

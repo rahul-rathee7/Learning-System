@@ -21,7 +21,7 @@ const formatFileSize = (bytes) => {
 const DocumentCard = ({
     document, onDelete
 }) => {
-    const navigate = userNavigate();
+    const navigate = useNavigate();
 
     const handleNavigate = () => {
         navigate(`/documents/${document._id}`);
@@ -81,7 +81,7 @@ const DocumentCard = ({
             </div>
 
         </div>
-        <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-emerald-500/0 to-teal-500/0 group-hover:from-emerald-500/5 group-hover:to-teal-500/5 transition-all duration-300 pointer-events-none" />
+        <div className="absolute inset-0 z-0 rounded-2xl bg-linear-to-br from-emerald-500/0 to-teal-500/0 group-hover:from-emerald-500/5 group-hover:to-teal-500/5 transition-all duration-300 pointer-events-none" />
     </div>
 }
 

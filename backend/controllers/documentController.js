@@ -84,8 +84,10 @@ export const getDocuments = async (req, res, next) => {
     try {
         const documents = await Document.aggregate([
             {
-                $match: {userId: new mongoose.Types.ObjectId(req.user._id)}
+                $match: { userId: new mongoose.Types.ObjectId(req.user._id) }
             },
+
+            // 1. Get flashcards
             {
                 $lookup: {
                     from: 'flashcards',
@@ -94,14 +96,30 @@ export const getDocuments = async (req, res, next) => {
                     as: 'flashcardSets'
                 }
             },
+
+            // 2. Get quizzes (FIXED)
             {
                 $lookup: {
                     from: 'quizzes',
                     localField: '_id',
                     foreignField: 'documentId',
-                    quizCount: { $size: '$quizzes' }
+                    as: 'quizzes'
                 }
             },
+
+            // 3. NOW calculate counts
+            {
+                $addFields: {
+                    flashcardCount: {
+                        $size: { $ifNull: ["$flashcardSets", []] }
+                    },
+                    quizCount: {
+                        $size: { $ifNull: ["$quizzes", []] }
+                    }
+                }
+            },
+
+            // 4. Remove heavy fields
             {
                 $project: {
                     extractedText: 0,
@@ -110,21 +128,22 @@ export const getDocuments = async (req, res, next) => {
                     quizzes: 0
                 }
             },
+
             {
-                $sort: {uploadDate:  -1}
+                $sort: { uploadDate: -1 }
             }
-        ])
+        ]);
 
         res.status(200).json({
             success: true,
             count: documents.length,
             data: documents
-        })
+        });
+
+    } catch (error) {
+        next(error);
     }
-    catch (error) {
-        next(error)
-    }
-}
+};
 
 export const getDocument = async (req, res, next) => {
     try {

@@ -5,10 +5,11 @@ import toast from "react-hot-toast";
 import { FileText, BookOpen, BrainCircuit, TrendingUp, Clock } from "lucide-react";
 
 const DashboardPage = () => {
-  const [dashboardData, setDashboardData] = useState(null);
+  const [dashboardData, setDashboardData] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchDashboardData = async () => {
       try {
         const data = await progressService.getDashboardData();
@@ -25,7 +26,7 @@ const DashboardPage = () => {
 
     fetchDashboardData();
   }, []);
-
+  
   if (loading) {
     return <Spinner />
   }
