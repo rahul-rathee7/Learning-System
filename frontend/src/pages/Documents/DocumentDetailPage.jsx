@@ -5,6 +5,7 @@ import Spinner from '../../components/common/Spinner';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import PageHeader from '../../components/common/PageHeader';
+import ChatInterface from '../../components/chat/ChatInterface'
 import Tabs from '../../components/common/Tabs';
 
 const DocumentDetailPage = () => {
@@ -38,7 +39,7 @@ const DocumentDetailPage = () => {
       return filePath;
     }
 
-    const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const baseUrl = import.meta.env.REACT_APP_API_URL || 'http://localhost:8000';
     return `${baseUrl}${filePath.startsWith('/') ? '' : '/'}${filePath}`;
   };
 
@@ -49,7 +50,6 @@ const DocumentDetailPage = () => {
     if (!document || !document.data || !document.data.filePath) {
       return <div className="text-center p-8">PDF not available.</div>
     }
-  };
 
   const pdfUrl = getPdfUrl();
 
@@ -80,9 +80,10 @@ const DocumentDetailPage = () => {
       </div>
     </div>
   );
+}
 
   const renderChat = () => {
-    return "renderChat"
+    return <ChatInterface />
   };
 
   const renderAIActions = () => {

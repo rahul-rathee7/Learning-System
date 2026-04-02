@@ -9,11 +9,11 @@ export const API_PATHS = {
         CHANGE_PASSWORD: "/api/auth/change-password",
     },
     DOCUMENTS: {
-        UPLOAD: "/api/documents/upload",
+        UPLOAD: "/api/document/upload",
         GET_DOCUMENTS: "/api/document",
-        GET_DOCUMENT_BY_ID: (id) => `/api/documents/${id}`,
-        UPDATE_DOCUMENT: (id) => `/api/documents/${id}`,
-        DELETE_DOCUMENT: (id) => `/api/documents/${id}`
+        GET_DOCUMENT_BY_ID: (id) => `/api/document/${id}`,
+        UPDATE_DOCUMENT: (id) => `/api/document/${id}`,
+        DELETE_DOCUMENT: (id) => `/api/document/${id}`
     },
     AI: {
         GENERATE_FLASHCARDS: "/api/ai/generate-flashcards",

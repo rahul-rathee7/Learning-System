@@ -1,12 +1,13 @@
 import React from 'react';
 
 const Tabs = ({ tabs, activeTab, setActiveTab }) => {
+    console.log("tabs: ",tabs, "activetabs: ", activeTab);
     return <div className='w-full'>
         <div className='relative border-2 border-slate-100'>
             <nav className='flex gap-2'>
-                {tabs.map((tab) => {
+                {tabs.map((tab, index) => (
                     <button
-                        key={tab.name}
+                        key={index}
                         onClick={() => setActiveTab(tab.name)}
                         className={`relative pb-4 px-2 md:px-6 text-sm font-semibold transiton-all duration-200 ${activeTab === tab.name
                             ? 'text-emerald-600'
@@ -21,18 +22,18 @@ const Tabs = ({ tabs, activeTab, setActiveTab }) => {
                             <div className='absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-transparent rounded-t-xl -z-10' />
                         )}
                     </button>
-                })}
+                ))}
             </nav>
         </div>
         <div className='py-6'>
-            {tabs.map((tab) => {
+            {tabs.map((tab, index) => {
                 if (tab.name === activeTab) {
                     return (
                         <div
-                            key={tab.name}
+                            key={index}
                             className='animate-in fade-in duration-300'
                         >
-                            {tab.current}
+                            {tab.content}
                         </div>
                     );
                 }
