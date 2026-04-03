@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Tabs = ({ tabs, activeTab, setActiveTab }) => {
-    console.log("tabs: ",tabs, "activetabs: ", activeTab);
     return <div className='w-full'>
         <div className='relative border-2 border-slate-100'>
             <nav className='flex gap-2'>

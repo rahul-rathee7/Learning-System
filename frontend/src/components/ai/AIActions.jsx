@@ -4,6 +4,7 @@ import { Sparkles, BookOpen, Lightbulb, Book } from 'lucide-react';
 import aiService from '../../services/aiService';
 import toast from 'react-hot-toast';
 import MarkDownRenderer from '../common/MarkDownRenderer';
+import Modal from '../common/Modal'
 
 const AIActions = () => {
 
@@ -17,12 +18,12 @@ const AIActions = () => {
     const handleGenerateSummary = async () => {
         setLoadingAction("summary");
         try {
-            const { summary } = await aiService.generateSummary(documentId);
+            const res = await aiService.generateSummary(documentId);
             setModalTitle("Generated Summary");
-            setModalContent(summary);
+            setModalContent(res.data.summary);
             setIsModalOpen(true);
         } catch (error) {
-            toast.error('Failed to generate summary.');
+            toast.error('Failed to generate summary.', error);
         } finally {
             setLoadingAction(null);
         }
@@ -36,13 +37,13 @@ const AIActions = () => {
         }
         setLoadingAction("explanation");
         try {
-            const { explanation } = await aiService.explainConcept(documentId, concept);
-            setModalTitle(`Explanation of "${concept}"`);
-            setModalContent(explanation);
+            const res = await aiService.explainConcept(documentId, concept);
+            setModalTitle(`Explanation of "${res.data.concept}"`);
+            setModalContent(res.data.explanation);
             setIsModalOpen(true);
             setConcept("");
         } catch (error) {
-            toast.error('Failed to explain concept.');
+            toast.error('Failed to explain concept.', error);
         } finally {
             setLoadingAction(null);
         }

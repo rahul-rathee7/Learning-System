@@ -87,7 +87,7 @@ export const chunkText = (text, chunkSize = 500, overlap = 50) => {
     }
 
     // Fallback: if paragraph logic failed
-    if (!chunks.length === 0 && cleanedText.length > 0) {
+    if (chunks.length === 0 && cleanedText.length > 0) {
         const allWords = cleanedText.split(/\s+/);
         for (let i = 0; i < allWords.length; i += (chunkSize - overlap)) {
             const chunkWords = allWords.slice(i, i + chunkSize);
@@ -168,7 +168,7 @@ export const findRelevantChunks = (chunks, query, maxChunks = 3) => {
             _id: chunk._id,
             score: normalizedScore * positionBonus,
             rawScore: score,
-            matchedWords: uniqueMatches
+            matchedWords: uniqueWordsFound
         };
     });
 

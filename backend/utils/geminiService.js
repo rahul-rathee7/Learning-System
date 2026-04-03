@@ -24,7 +24,7 @@ export const generateFlashcards = async (text, count = 10) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "models/gemini-2.5-flash",
+            model: "models/gemini-2.0-flash",
             contents: prompt,
         });
 
@@ -79,7 +79,7 @@ export const generateQuiz = async (text, numQuestions = 5) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "models/gemini-2.5-flash",
+            model: "models/gemini-2.0-flash",
             contents: prompt,
         });
 
@@ -148,7 +148,7 @@ export const generateSummary = async(text) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "models/gemini-2.5-flash",
+            model: "models/gemini-2.0-flash",
             contents: prompt,
         });
 
@@ -163,7 +163,7 @@ export const generateSummary = async(text) => {
 export const chatWithContext = async (question, chunks) => {
     const context = chunks.map((c, i) => `[Chunk ${i + 1}]\n${c.content}`).join('\n');
 
-    console.log("context_____", context);
+    // console.log("context_____", context);
 
     const prompt = `Based on the following context from a document, Analyse the context and answer the user's question.
     If the answer is not in the context, say so.
@@ -177,7 +177,7 @@ export const chatWithContext = async (question, chunks) => {
 
     try{
         const response = await ai.models.generateContent({
-            model: "models/gemini-2.5-flash",
+            model: "models/gemini-2.0-flash",
             contents: prompt,
         });
         const generatedText = response.text;
@@ -198,7 +198,7 @@ export const explainConcept = async (concept, context) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "models/gemini-2.5-flash",
+            model: "models/gemini-2.0-flash",
             contents: prompt,
         });
 
