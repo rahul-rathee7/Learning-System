@@ -23,7 +23,7 @@ const MarkDownRenderer = ({ content }) => {
           em: ({ node, ...props }) => <em className='italic' {...props} />,
           blockquote: ({ node, ...props }) => <blockquote className='border-l-4 border-neutral-300 pl-4 italic text-neutral-600 my-2' {...props} />,
           code: ({ node, inline, className, children, ...props }) => {
-            const match = /language-(\w+))/.exec(className || '');
+            const match = /language-(\w+)/.exec(className || '');
             return !inline && match ? (
               <SyntaxHighlighter
                 style={dracula}
