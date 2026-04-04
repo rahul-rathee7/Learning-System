@@ -41,7 +41,6 @@ export const reviewFlashcard = async (req, res, next) => {
             'cards._id': req.params.cardId,
             userId: req.user._id
         });
-        console.log(flashcardSet)
 
         if (!flashcardSet) {
             return res.status(404).json({
