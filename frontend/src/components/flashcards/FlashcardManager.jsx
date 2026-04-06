@@ -87,7 +87,7 @@ const FlashcardManager = ({ documentId }) => {
   const handleToggleStar = async (cardId) => {
     try{
         await flashcardService.toggleStar(cardId);
-        const updatedSets = flashcard.map((set) => {
+        const updatedSets = flashcardSets.map((set) => {
             if(set._id === selectedSet._id) {
                 const updatedSets = set.cards.map((card) => 
                 card._id === cardId ? { ...card, isStarred: !card.isStarred} : card
@@ -102,8 +102,7 @@ const FlashcardManager = ({ documentId }) => {
     } catch(error) {
         toast.error("Failed to update star status.");
     }
-    }
-  };
+  }
 
   const handleDeleteRequest = (e, set) => {
     e.stopPropagation();
