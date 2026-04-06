@@ -14,6 +14,7 @@ import flashcardService from "../../services/flashcardService";
 import aiService from "../../services/aiService";
 import Spinner from "../common/Spinner";
 import Modal from "../common/Modal";
+import Flashcard from './Flashcard'
 import { select } from "framer-motion/client";
 const FlashcardManager = ({ documentId }) => {
   const [flashcardSets, setFlashcardSets] = useState([]);
