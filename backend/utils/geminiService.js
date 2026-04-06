@@ -60,6 +60,13 @@ export const generateFlashcards = async (text, count = 10) => {
     }
 };
 
+/**
+ * 
+ * @param {string} text 
+ * @param {number} numQuestions 
+ * @returns {Promise<Array<{question: string, options: Array, correctAnswer: string, explanation: string, difficulty: string}>>}
+ */
+
 export const generateQuiz = async (text, numQuestions = 5) => {
     const prompt = `Generate exactly ${numQuestions} multiple choice questions from the following text.
     Format each question as:
@@ -79,7 +86,7 @@ export const generateQuiz = async (text, numQuestions = 5) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "models/gemini-2.5-flash",
+            model: "models/gemini-2.5-flash-lite",
             contents: prompt,
         });
 
@@ -90,28 +97,23 @@ export const generateQuiz = async (text, numQuestions = 5) => {
 
         for (const block of questionBlocks) {
             const lines = block.trim().split('\n');
-
-            let question = '';
-            let options = [];
-            let correctAnswer = '';
-            let explanation = '';
-            let difficulty = 'medium';
+            let question = '', options = [], correctAnswer = '', explanation = '', difficulty = 'medium';
 
             for (const line of lines) {
                 const trimmed = line.trim();
 
                 if (trimmed.startsWith('Q:')) {
                     question = trimmed.substring(2).trim();
-                } 
-                else if (/^0[1-4]:/.test(trimmed)) {
+                }
+                else if (trimmed.match(/^0\d:/)) {
                     options.push(trimmed.substring(3).trim());
-                } 
+                }
                 else if (trimmed.startsWith('C:')) {
-                    correctAnswer = trimmed.substring(2).trim();
-                } 
+                    correctAnswer = trimmed.substring(2).trim().replace(/^0\d:\s*/, '');
+                }
                 else if (trimmed.startsWith('E:')) {
                     explanation = trimmed.substring(2).trim();
-                } 
+                }
                 else if (trimmed.startsWith('D:')) {
                     const diff = trimmed.substring(2).trim().toLowerCase();
                     if (['easy', 'medium', 'hard'].includes(diff)) {
@@ -139,7 +141,13 @@ export const generateQuiz = async (text, numQuestions = 5) => {
     }
 };
 
-export const generateSummary = async(text) => {
+/**
+ * 
+ * @param {string} text 
+ * @returns {Promise<string>}
+ */
+
+export const generateSummary = async (text) => {
     const prompt = `Provide a concise summary of the following text, highlighting the key concepts, main ideas, and important points.
     Keep the summary clean and structured.
 
@@ -175,7 +183,7 @@ export const chatWithContext = async (question, chunks) => {
     
     Answer:`;
 
-    try{
+    try {
         const response = await ai.models.generateContent({
             model: "models/gemini-2.5-flash",
             contents: prompt,

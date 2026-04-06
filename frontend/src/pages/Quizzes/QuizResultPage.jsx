@@ -64,6 +64,15 @@ const QuizResultPage = () => {
     return 'Keep practicing! ';
   }
 
+  const printData = () => {
+    console.log(score);
+  }
+
+  setTimeout(() => {
+    console.log(detailedResults)
+    printData()
+  }, 2000);
+
   return (
     <div className='max-w-5xl mx-auto'>
       {/*Back Button*/}
@@ -131,18 +140,15 @@ const QuizResultPage = () => {
         </div>
 
         {
-          detailedResults.map((result, index) => {
-            const userAnswerIndex = result.options.findIndex(opt => opt === result.selectedAnswer);
-            const correctAnswerIndex = result.correctAnswer.startsWith('0')
-              ? parseInt(result.correctAnswer.subString(1)) - 1
-              : result.options.findIndex(opt => opt === result.correctAnswer);
-
+          detailedResults?.map((result, index) => {
+            const userAnswerIndex = result?.options?.findIndex(opt => opt === result.selectedAnswer);
+            const correctAnswerIndex = result.options?.findIndex(opt => opt === result.correctAnswer);
             const isCorrect = result.isCorrect;
 
             return (
               <div
                 key={index}
-                className='bg-white/80 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50'
+                className='bg-white/80 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 p-6'
               >
                 <div className='flex items-start justify-between gap-4 mb-3'>
                   <div className='flex-1'>
@@ -167,7 +173,7 @@ const QuizResultPage = () => {
                   </div>
                 </div>
                 <div className='space-y-3 mb-4'>
-                  {result.options.map((option, optIndex) => {
+                  {result.options?.map((option, optIndex) => {
                     const isCorrectOption = optIndex === correctAnswerIndex;
                     const isUserAnswer = optIndex === userAnswerIndex;
                     const isWrongAnswer = isUserAnswer && !isCorrect;

@@ -48,6 +48,7 @@ export const submitQuiz = async (req, res, next) => {
         const { answers } = req.body;
 
         if (!Array.isArray(answers)) {
+            console.log("answers is not an array")
             return res.status(400).json({
                 success: false,
                 error: 'Please provide answers array',
@@ -61,6 +62,7 @@ export const submitQuiz = async (req, res, next) => {
         });
 
         if (!quiz) {
+            console.log("quiz not found");
             return res.status(404).json({
                 success: false,
                 error: 'Quiz not found',
@@ -69,6 +71,7 @@ export const submitQuiz = async (req, res, next) => {
         }
 
         if (quiz.completedAt) {
+            console.log('quiz already completed')
             return res.status(400).json({
                 success: false,
                 error: 'Quiz already completed',
@@ -79,12 +82,12 @@ export const submitQuiz = async (req, res, next) => {
         let correctCount = 0;
         const userAnswers = [];
 
-        answers.forEach(answer => {
-            const { questionIndex, selectedAnswer } = answer;
+        answers.forEach((answer) => {
+            const { questionIndex, selectedAnswer} = answer;
 
             if (questionIndex < quiz.questions.length) {
                 const question = quiz.questions[questionIndex];
-                const isCorrect = question.correctAnswer === selectedAnswer;
+                const isCorrect = selectedAnswer=== question.correctAnswer
 
                 if (isCorrect) {
                     correctCount++;
@@ -147,7 +150,7 @@ export const getQuizResults = async (req, res, next) => {
             });
         }
 
-        const detailedResults = quiz.userAnswers.map((question, index) => {
+        const detailedResults = quiz.questions.map((question, index) => {
             const userAnswer = quiz.userAnswers.find(a => a.questionIndex === index);
 
             return {
@@ -171,9 +174,9 @@ export const getQuizResults = async (req, res, next) => {
                     score: quiz.score,
                     totalQuestions: quiz.totalQuestions,
                     completedAt: quiz.completedAt
-                }
-            },
-            results: detailedResults
+                },
+                results: detailedResults
+            }
         });
     } catch (error) {
         next(error);

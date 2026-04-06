@@ -76,6 +76,7 @@ export const reviewFlashcard = async (req, res, next) => {
 };
 
 export const toggleStarFlashcard = async (req, res, next) => {
+    console.log("flashcard is running...")
     try {
         const flashcardSet = await FlashCard.findOne({
             'cards._id': req.params.cardId,

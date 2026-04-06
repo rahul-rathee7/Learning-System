@@ -144,6 +144,7 @@ try {
     const { currentPassword, newPassword } = req.body;
 
     if(!currentPassword || !newPassword) {
+        console.log("please provide current and new password")
         return res.status(400).json({
             success: false,
             error: "Please provide current and new password",
@@ -156,6 +157,7 @@ try {
     const isMatch = await user.matchPassword(currentPassword);
 
     if(!isMatch) {
+        console.log("current password is incorrect")
         return res.status(401).json({
             success: false,
             error: "Current password is incorrect",

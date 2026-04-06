@@ -50,7 +50,7 @@ const Flashcard = ({ flashcard, onToggleStar }) => {
                 {/*Question Content*/}
                 <div className="flex-1 flex items-center justify-center px-4 py-6">
                     <p className="text-lg font-semibold text-slate-900 text-center leading-relaxed">
-                        {flashcard.question}
+                        {flashcard.questions}
                     </p>
                 </div>
 
@@ -93,7 +93,7 @@ const Flashcard = ({ flashcard, onToggleStar }) => {
                 {/*Answer Content*/}
                 <div className="flex-1 flex items-center justify-center px-4 py-6">
                     <p className="text-base text-white text-center leading-relaxed font-medium">
-                        {flashcard.answer}
+                        {flashcard.answers}
                     </p>
                 </div>
 

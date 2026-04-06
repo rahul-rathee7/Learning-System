@@ -3,7 +3,6 @@ import flashcardService from '../../services/flashcardService';
 import PageHeader from '../../components/common/PageHeader';
 import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
-import FlashcardSet from '../../components/flashcards/FlashcardSetCard';
 import toast from 'react-hot-toast';
 import FlashcardSetCard from '../../components/flashcards/FlashcardSetCard';
 

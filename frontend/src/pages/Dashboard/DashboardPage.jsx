@@ -13,7 +13,8 @@ const DashboardPage = () => {
     const fetchDashboardData = async () => {
       try {
         const data = await progressService.getDashboardData();
-        setDashboardData(data.data);
+        console.log(data);
+        setDashboardData(data);
       } catch (error) {
         toast.error('Failed to fetch dashboard data.');
         console.error(error);
@@ -29,7 +30,7 @@ const DashboardPage = () => {
     return <Spinner />
   }
 
-  if (!dashboardData || !dashboardData.overview) {
+  if (!dashboardData.data || !dashboardData.data.overview) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center">
         <div className="text-center">
@@ -45,21 +46,21 @@ const DashboardPage = () => {
   const stats = [
     {
       label: 'Total Documents',
-      value: dashboardData.overview.totalDocuments,
+      value: dashboardData.data.overview.totalDocuments,
       icon: FileText,
       gradient: 'from-blue-500 to-cyan-500',
       shadowColor: 'shadow-blue-500/25'
     },
     {
       label: 'Total Flashcards',
-      value: dashboardData.overview.totalFlashcards,
+      value: dashboardData.data.overview.totalFlashcards,
       icon: BookOpen,
       gradient: 'from-purple-500 to-pink-500',
       shadowColor: 'shadow-purple-500/25'
     },
     {
       label: 'Total Quizzes',
-      value: dashboardData.overview.totalQuizzes,
+      value: dashboardData.data.overview.totalQuizzes,
       icon: BrainCircuit,
       gradient: 'from-emerald-500 to-teal-500',
       shadowColor: 'shadow-emerald-500/25'

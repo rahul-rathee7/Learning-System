@@ -126,7 +126,7 @@ const FlashcardPage = () => {
       );
     }
 
-    const currentCard = flashcards(currentCardIndex);
+    const currentCard = flashcards[currentCardIndex];
 
     return (
       <div className='flex flex-col items-center space-y-6'>
