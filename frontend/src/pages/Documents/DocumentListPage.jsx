@@ -142,13 +142,13 @@ const DocumentListPage = () => {
     };
 
     return (
-        <div className="min-h-screen border-2">
+        <div className="h-full relative w-full border-2">
             {/*Sublte Background Pattern*/}
             <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px, transparent_1px)] bg-size-[16px-16px]">
 
-                <div className="relative max-w-7xl mx-auto">
+                <div className="relative p-10 mx-auto">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-10">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-0 mb-10">
                         <div>
                             <h1 className="text-2xl font-medium text-slate-900 tracking-tight mb-2">
                                 My Documents
