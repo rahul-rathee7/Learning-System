@@ -9,7 +9,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         <div className="flex items-center justify-center min-h-screen px-4 py-8">
             <div
                 className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
-                onClick={onclose}
+                onClick={onClose}
             ></div>
 
             <div className="relative w-full max-w-lg bg-white/95 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-2xl shadow-slate-900/20 p-8 z-10 animate-in fade-in slide-in-from-bottom-4 duration-300">

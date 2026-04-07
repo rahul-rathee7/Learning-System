@@ -15,7 +15,6 @@ import aiService from "../../services/aiService";
 import Spinner from "../common/Spinner";
 import Modal from "../common/Modal";
 import Flashcard from './Flashcard'
-import { select } from "framer-motion/client";
 const FlashcardManager = ({ documentId }) => {
   const [flashcardSets, setFlashcardSets] = useState([]);
   const [selectedSet, setSelectedSet] = useState(null);
@@ -83,25 +82,27 @@ const FlashcardManager = ({ documentId }) => {
       toast.success("Flashcard reviewed!");
     } catch (error) {
       toast.error("Failed to review flashcard.");
+      console.error(error);
     }
   };
   const handleToggleStar = async (cardId) => {
-    try{
-        await flashcardService.toggleStar(cardId);
-        const updatedSets = flashcardSets.map((set) => {
-            if(set._id === selectedSet._id) {
-                const updatedSets = set.cards.map((card) => 
-                card._id === cardId ? { ...card, isStarred: !card.isStarred} : card
-            );
-            return {...set, cards: updatedSets};
-            }
-            return set;
-        });
-        setFlashcardSets(updatedSets);
-        setSelectedSet(updatedSets.find((set) => set._id === selectedSet._id));
-        toast.success("Flashcard starred status updated!");
-    } catch(error) {
-        toast.error("Failed to update star status.");
+    try {
+      await flashcardService.toggleStar(cardId);
+      const updatedSets = flashcardSets.map((set) => {
+        if (set._id === selectedSet._id) {
+          const updatedSets = set.cards.map((card) =>
+            card._id === cardId ? { ...card, isStarred: !card.isStarred } : card
+          );
+          return { ...set, cards: updatedSets };
+        }
+        return set;
+      });
+      setFlashcardSets(updatedSets);
+      setSelectedSet(updatedSets.find((set) => set._id === selectedSet._id));
+      toast.success("Flashcard starred status updated!");
+    } catch (error) {
+      toast.error("Failed to update star status.");
+      console.error(error);
     }
   }
 
@@ -165,9 +166,9 @@ const FlashcardManager = ({ documentId }) => {
               disabled={selectedSet.cards.length <= 1}
               className="group flex items-center gap-2 px-5 h-11 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-slate-100"
             >
-              <ChevronLeft 
-              className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" 
-              strokeWidth={2.5} />
+              <ChevronLeft
+                className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200"
+                strokeWidth={2.5} />
               Previous
             </button>
 
@@ -254,9 +255,10 @@ const FlashcardManager = ({ documentId }) => {
           >
             {generating ? (
               <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin">
-                  Generating...
-                </div>
+                {/* The spinner is now empty and self-closing */}
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                {/* The text is a sibling, so it stays still */}
+                <span>Generating...</span>
               </>
             ) : (
               <>
