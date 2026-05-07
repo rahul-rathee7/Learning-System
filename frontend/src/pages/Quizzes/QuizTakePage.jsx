@@ -87,7 +87,7 @@ const QuizTakePage = () => {
     return (
       <div className='flex items-center justify-center min-h-[60vh]'>
         <div className='text-center'>
-          <p className='text-slate-600 text-lg'>Quiz not found or has no questions.</p>
+          <p className='text-neutral-700 text-lg'>Quiz not found or has no questions.</p>
         </div>
       </div>
     );
@@ -104,31 +104,31 @@ const QuizTakePage = () => {
       {/*Progess bar*/}
       <div className='mb-6'>
         <div className='flex items-center justify-between mb-2'>
-          <span className='text-sm font-semibold text-slate-700'>
+          <span className='text-sm font-semibold text-black'>
             Question {currentQuestionIndex + 1} of {quiz.questions.length}
           </span>
-          <span className='text-sm font-medium text-slate-500'>
+          <span className='text-sm font-medium text-neutral-700'>
             {answeredCount} answered
           </span>
         </div>
-        <div className='relative h-2 bg-slate-100 rounded-full overflow-hidden'>
+        <div className='relative h-2 bg-white border-2 border-black rounded-sm overflow-hidden'>
           <div
-            className='absolute inset-y-0 left-0 bg-linear-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500 ease-out'
+            className='absolute inset-y-0 left-0 bg-black transition-all duration-500 ease-out'
             style={{ width: `${((currentQuestionIndex + 1) / quiz.questions.length) * 100}%` }}
           />
         </div>
       </div>
 
       {/*Question Card*/}
-      <div className='bg-white/80 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 p-6 mb-8'>
-        <div className='inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl mb-6'>
-          <div className='w-2 h-2 bg-emerald-500 rounded-full animate-pulse' />
-          <span className='text-sm font-semibold text-emerald-700'>
+      <div className='bg-[#f7f2e8] border-2 border-black rounded-sm shadow-[4px_4px_0px_#000] p-6 mb-8'>
+        <div className='inline-flex items-center gap-2 px-4 py-2 bg-[#ffd400] border-2 border-black rounded-sm mb-6'>
+          <div className='w-2 h-2 bg-black rounded-full animate-pulse' />
+          <span className='text-sm font-semibold text-black'>
             Question {currentQuestionIndex + 1}
           </span>
         </div>
 
-        <h3 className='text-lg font-semibold text-slate-900 mb-6 leading-relaxed'>
+        <h3 className='text-lg font-semibold text-black mb-6 leading-relaxed'>
           {currentQuestion.question}
         </h3>
 
@@ -139,9 +139,9 @@ const QuizTakePage = () => {
           return (
             <label
               key={index}
-              className={`group relative flex items-center p-3 border-2 rounded-xl cursor-pointer transition-all duration-200 ${isSelected
-                ? 'border-emerald-500 bg-emerald-50 shadow-lg shadow-emerald-500/10'
-                : 'border-slate-200 bg-slate-50/50 hover:border-slate-300 hover:bg-white hover:shadow-md'
+              className={`group relative flex items-center p-3 border-2 rounded-sm cursor-pointer transition-all duration-150 ${isSelected
+                ? 'border-black bg-[#ffd400]'
+                : 'border-black bg-white hover:bg-[#f6f3ea]'
                 }`}
             >
               <input
@@ -156,9 +156,9 @@ const QuizTakePage = () => {
               />
 
               <div
-                className={`shrink-0 w-5 h-5 rounded-full border-2 transition-all duration-200 ${isSelected
-                  ? 'bg-emerald-500 border-emerald-500'
-                  : 'bg-white border-slate-300 group-hover:border-emerald-400'
+                className={`shrink-0 w-5 h-5 rounded-full border-2 transition-all duration-150 ${isSelected
+                  ? 'bg-black border-black'
+                  : 'bg-white border-black'
                   }`}
               >
                 {isSelected && (
@@ -170,9 +170,9 @@ const QuizTakePage = () => {
 
               {/* Option Text */}
               <span
-                className={`ml-4 text-sm font-medium transition-colors duration-200 ${isSelected
-                  ? 'text-emerald-900'
-                  : 'text-slate-700 group-hover:text-slate-900'
+                className={`ml-4 text-sm font-medium transition-colors duration-150 ${isSelected
+                  ? 'text-black'
+                  : 'text-black'
                   }`}
               >
                 {option}
@@ -181,7 +181,7 @@ const QuizTakePage = () => {
               {/* Checkmark */}
               {isSelected && (
                 <CheckCircle2
-                  className="ml-auto w-5 h-5 text-emerald-500"
+                  className="ml-auto w-5 h-5 text-black"
                   strokeWidth={2.5}
                 />
               )}
@@ -206,7 +206,7 @@ const QuizTakePage = () => {
           <button
             onClick={handleSubmitQuiz}
             disabled={submitting}
-            className='group relative px-8 h-12 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 shadow-lg shadow-emerald-500/25 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 overflow-hidden'
+            className='group relative px-8 h-12 bg-black text-[#f6f3ea] font-semibold text-sm rounded-sm border-2 border-black shadow-[4px_4px_0px_#000] transition-all duration-150 active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
           >
             <span className='relative z-10 flex items-center justify-center gap-2'>
               {submitting ? (
@@ -221,7 +221,6 @@ const QuizTakePage = () => {
                 </>
               )}
             </span>
-            <div className='absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700' />
           </button>
         ) : (
           <Button
@@ -245,11 +244,11 @@ const QuizTakePage = () => {
               key={index}
               onClick={() => setCurrentQuestionIndex(index)}
               disabled={submitting}
-              className={`w-8 h-8 rounded-lg font-semibold text-xs transition-all duration-200 ${isCurrent
-                ? 'bg-linear-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/25 scale-110'
+              className={`w-8 h-8 rounded-sm border-2 border-black font-semibold text-xs transition-all duration-150 ${isCurrent
+                ? 'bg-black text-[#f6f3ea] scale-110'
                 : isAnsweredQuestion
-                  ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#ffd400] text-black'
+                  : 'bg-white text-black'
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {index + 1}

@@ -1,10 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap");
 @import "tailwindcss";
 
 
 @theme {
-  --font-display: "Urbanist", "sans-serif";
+  --font-display: "Space Grotesk", "sans-serif";
   --breakpoint-3xl: 1920px;
-  --color-primary: #FF9324;
+  --color-primary: #ffd400;
 }
 
 @layer base {
@@ -13,6 +14,16 @@
   }
 
   body{
-    background-color: #fcfbfc;
+    background-color: #f6f3ea;
+    background-image:
+      linear-gradient(90deg, rgba(17, 24, 39, 0.08) 1px, transparent 1px),
+      linear-gradient(rgba(17, 24, 39, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: #111827;
+  }
+
+  ::selection {
+    background: #111827;
+    color: #f6f3ea;
   }
 }

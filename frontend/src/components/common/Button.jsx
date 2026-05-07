@@ -9,12 +9,12 @@ const Button = ({
     variant = "primary",
     size = "md",
 }) => {
-    const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 active:scale[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 whitespace-nowrap";
+    const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold rounded-sm border-2 border-black transition-all duration-150 active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:translate-x-0 disabled:active:translate-y-0 whitespace-nowrap";
 
     const variantSytles = {
-        primary: "bg-linear-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/25 hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl hover:shadow-emerald-500/30",
-        secondary: "bg-slate-100 text-slate-700 hover:bg-slate-200",
-        outline: "bg-white border-2 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300",
+        primary: "bg-[#ffd400] text-black shadow-[4px_4px_0px_#000] hover:bg-[#ffdf3a]",
+        secondary: "bg-white text-black shadow-[4px_4px_0px_#000] hover:bg-[#f1f5f9]",
+        outline: "bg-transparent text-black shadow-[4px_4px_0px_#000] hover:bg-black hover:text-[#f6f3ea]",
     };
 
     const sizeStyles = {

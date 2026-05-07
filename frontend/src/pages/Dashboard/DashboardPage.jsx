@@ -2,182 +2,495 @@ import React, { useEffect, useState } from "react";
 import Spinner from "../../components/common/Spinner";
 import progressService from "../../services/progressService";
 import toast from "react-hot-toast";
-import { FileText, BookOpen, BrainCircuit, TrendingUp, Clock } from "lucide-react";
+import { FileText, BookOpen, BrainCircuit, TrendingUp, Clock, ArrowUpRight } from "lucide-react";
 
 const DashboardPage = () => {
   const [dashboardData, setDashboardData] = useState();
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     const fetchDashboardData = async () => {
       try {
         const data = await progressService.getDashboardData();
-        console.log(data);
         setDashboardData(data);
       } catch (error) {
-        toast.error('Failed to fetch dashboard data.');
+        toast.error("Failed to fetch dashboard data.");
         console.error(error);
       } finally {
         setLoading(false);
+        setTimeout(() => setMounted(true), 50);
       }
     };
-
     fetchDashboardData();
   }, []);
-  
-  if (loading) {
-    return <Spinner />
+
+  if (loading) return <Spinner />;
+
+  if (!dashboardData?.data || !dashboardData?.data?.overview) {
+    return (
+      <div style={styles.emptyState}>
+        <div style={styles.emptyIcon}>
+          <TrendingUp size={28} color="#a3e635" />
+        </div>
+        <p style={styles.emptyText}>No dashboard data available.</p>
+      </div>
+    );
   }
 
-  if (!dashboardData.data || !dashboardData.data.overview) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-100 mb-4">
-            <TrendingUp className="w-8 h-8 text-slate-400" />
-          </div>
-          <p className="text-slate-600 text-sm">No dashboard data available.</p>
-        </div>
-      </div>
-    )
-  };
+  const { totalDocuments, totalFlashcards, totalQuizzes } = dashboardData.data.overview;
 
   const stats = [
-    {
-      label: 'Total Documents',
-      value: dashboardData.data.overview.totalDocuments,
-      icon: FileText,
-      gradient: 'from-blue-500 to-cyan-500',
-      shadowColor: 'shadow-blue-500/25'
-    },
-    {
-      label: 'Total Flashcards',
-      value: dashboardData.data.overview.totalFlashcards,
-      icon: BookOpen,
-      gradient: 'from-purple-500 to-pink-500',
-      shadowColor: 'shadow-purple-500/25'
-    },
-    {
-      label: 'Total Quizzes',
-      value: dashboardData.data.overview.totalQuizzes,
-      icon: BrainCircuit,
-      gradient: 'from-emerald-500 to-teal-500',
-      shadowColor: 'shadow-emerald-500/25'
-    }
+    { label: "Documents", value: totalDocuments, icon: FileText, accent: "#a3e635", tag: "TOTAL" },
+    { label: "Flashcards", value: totalFlashcards, icon: BookOpen, accent: "#fb923c", tag: "TOTAL" },
+    { label: "Quizzes", value: totalQuizzes, icon: BrainCircuit, accent: "#38bdf8", tag: "TOTAL" },
   ];
 
-  return (
-    <div className="min-h-screen">
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px, transparent_1px)] bg-size-[16px_16px] opacity-30 pointer-events-none" />
+  const activities = [
+    ...(dashboardData.recentActivity?.documents || []).map((doc) => ({
+      id: doc._id,
+      description: doc.title,
+      timestamp: doc.lastAccessed,
+      link: `/documents/${doc._id}`,
+      type: "document",
+    })),
+    ...(dashboardData.recentActivity?.quizzes || []).map((quiz) => ({
+      id: quiz._id,
+      description: quiz.title,
+      timestamp: quiz.lastAccessed,
+      link: `/quizzes/${quiz._id}`,
+      type: "quiz",
+    })),
+  ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-      <div className="relative max-w-7xl mx-auto ">
-        {/*Header*/}
-        <div className="mb-6">
-          <h1 className="text-2xl font-medium text-slate-900 tracking-tight mb-2">
-            Dashboard
-          </h1>
-          <p className="text-slate-500 text-sm">
-            Track your learning progress and activity
-          </p>
+  return (
+    <div style={styles.root}>
+      <style>{cssAnimations}</style>
+
+      {/* Decorative background lines */}
+      <div style={styles.bgLines}>
+        {[...Array(6)].map((_, i) => (
+          <div key={i} style={{ ...styles.bgLine, left: `${i * 20}%` }} />
+        ))}
+      </div>
+
+      <div style={{ ...styles.container, opacity: mounted ? 1 : 0, transition: "opacity 0.5s ease" }}>
+
+        {/* Header */}
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <span style={styles.eyebrow}>LEARNING HQ</span>
+            <h1 style={styles.title}>Dashboard</h1>
+          </div>
+          <div style={styles.headerRight}>
+            <p style={styles.subtitle}>Track your progress,<br />own your learning.</p>
+          </div>
         </div>
 
-        {/*Status Grid*/}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="group relative bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-xl shadow-slate-200/50 p-6 hover:shadow-2xl hover:shadow-slate-300/50 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                  {stat.label}
-                </span>
-                <div className={`w-11 h-11 rounded-xl bg-linear-to-br ${stat.gradient} shadow-lg ${stat.shadowColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon className="w-5 h-5 text-white" strokeWidth={2} />
-                </div>
-              </div>
-              <div className="text-3xl font-semibold text-slate-900 tracking-tight">
-                {stat.value}
-              </div>
-            </div>
+        <div style={styles.divider} />
+
+        {/* Stats Row */}
+        <div style={styles.statsGrid}>
+          {stats.map((stat, i) => (
+            <StatCard key={i} stat={stat} index={i} />
           ))}
         </div>
 
-        {/*Recent Activity Section*/}
-        <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-xl shadow-slate-200/50 p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-slate-600" strokeWidth={2} />
+        {/* Recent Activity */}
+        <div style={styles.activitySection}>
+          <div style={styles.activityHeader}>
+            <div style={styles.activityTitleRow}>
+              <Clock size={14} color="#737373" />
+              <span style={styles.activityLabel}>RECENT ACTIVITY</span>
             </div>
-            <h3 className="text-xl font-medium text-slate-900 tracking-tight">
-              Recent Activity
-            </h3>
+            <span style={styles.activityCount}>{activities.length} events</span>
           </div>
 
-          {dashboardData.recentActivity && (dashboardData.recentActivity.documents.length > 0 || dashboardData.recentActivity.quizzes.length > 0) ? (
-            <div className="space-y-3">
-              {[
-                ...(dashboardData.recentActivity.documents || []).map(doc => ({
-                  id: doc._id,
-                  description: doc.title,
-                  timestamp: doc.lastAccessed,
-                  link: `/documents/${doc._id}`,
-                  type: 'document'
-                })),
-                ...(dashboardData.recentActivity.quizzes || []).map(quiz => ({
-                  id: quiz._id,
-                  description: quiz.title,
-                  timestamp: quiz.lastAccessed,
-                  link: `/quizzes/${quiz._id}`,
-                  type: 'quiz'
-                }))
-              ]
-                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-                .map((activity, index) => (
-                  <div
-                    key={activity.id || index}
-                    className="group flex items-center justify-between p-4 rounded-xl bg-slate-50/50 border border-slate-200/60 hover:bg-white hover:border-slate-300/60 hover:shadow-md transition-all duration-200"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className={`w-2 h-2 rounded-full ${activity.type === 'document'
-                          ? 'bg-linear-to-r from-blue-400 to-cyan-500'
-                          : 'bg-linear-to-r from-emerald-400 to-teal-500'
-                          }`} />
-                        <p className="text-sm font-medium text-slate-900 truncate">
-                          {activity.type === 'document' ? 'Accessed Document: ' : 'Attempted Quiz'}
-                          <span className="text-slate-700">{activity.description}</span>
-                        </p>
-                      </div>
-                      <p className="text-xs text-slate-500 pl-4">
-                        {new Date(activity.timestamp).toLocaleString()}
-                      </p>
-                    </div>
-                    {activity.link && (
-                      <a
-                        href={activity.link}
-                        className="ml-4 px-4 py-2 text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-all duration-200 whitespace-nowrap"
-                      >
-                        View
-                      </a>
-                    )}
-                  </div>
-                ))}
+          {activities.length > 0 ? (
+            <div style={styles.activityList}>
+              {activities.map((activity, index) => (
+                <ActivityRow key={activity.id || index} activity={activity} index={index} />
+              ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-100 mb-4">
-                <Clock className="w-8 h-8 text-slate-400" />
-              </div>
-              <p className="text-sm text-slate-600">No recent activity yet.</p>
-              <p className="text-xs text-slate-500 mt-1">Start learning to see your progress here</p>
+            <div style={styles.emptyActivity}>
+              <div style={styles.emptyActivityDot} />
+              <p style={styles.emptyActivityText}>No activity yet. Start learning to see your history here.</p>
             </div>
           )}
         </div>
+
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashboardPage
+/* ── Sub-components ── */
+
+const StatCard = ({ stat, index }) => {
+  const [hovered, setHovered] = useState(false);
+  const Icon = stat.icon;
+
+  return (
+    <div
+      style={{
+        ...styles.statCard,
+        borderColor: hovered ? stat.accent : "#262626",
+        transform: hovered ? "translateY(-4px)" : "translateY(0)",
+        animationDelay: `${index * 0.1}s`,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="stat-card-anim"
+    >
+      <div style={styles.statTop}>
+        <span style={{ ...styles.statTag, color: stat.accent, borderColor: stat.accent }}>
+          {stat.tag}
+        </span>
+        <div style={{ ...styles.statIconBox, background: stat.accent + "18" }}>
+          <Icon size={16} color={stat.accent} strokeWidth={2} />
+        </div>
+      </div>
+
+      <div style={styles.statValue}>{stat.value ?? "—"}</div>
+      <div style={styles.statLabel}>{stat.label}</div>
+
+      {/* Bottom accent bar */}
+      <div
+        style={{
+          ...styles.statAccentBar,
+          background: stat.accent,
+          width: hovered ? "100%" : "0%",
+        }}
+      />
+    </div>
+  );
+};
+
+const ActivityRow = ({ activity, index }) => {
+  const [hovered, setHovered] = useState(false);
+  const isDoc = activity.type === "document";
+  const accent = isDoc ? "#a3e635" : "#38bdf8";
+
+  const timeAgo = (timestamp) => {
+    const diff = Date.now() - new Date(timestamp);
+    const mins = Math.floor(diff / 60000);
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
+  };
+
+  return (
+    <a
+      href={activity.link}
+      style={{
+        ...styles.activityRow,
+        background: hovered ? "#1a1a1a" : "transparent",
+        borderColor: hovered ? "#333" : "#1c1c1c",
+        animationDelay: `${index * 0.06}s`,
+        textDecoration: "none",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="activity-row-anim"
+    >
+      <div style={{ ...styles.activityDot, background: accent }} />
+
+      <div style={styles.activityMeta}>
+        <span style={{ ...styles.activityType, color: accent }}>
+          {isDoc ? "DOCUMENT" : "QUIZ"}
+        </span>
+        <span style={styles.activityName}>{activity.description}</span>
+      </div>
+
+      <div style={styles.activityRight}>
+        <span style={styles.activityTime}>{timeAgo(activity.timestamp)}</span>
+        <ArrowUpRight
+          size={14}
+          color={hovered ? accent : "#404040"}
+          style={{ transition: "color 0.2s" }}
+        />
+      </div>
+    </a>
+  );
+};
+
+/* ── Styles ── */
+
+const styles = {
+  root: {
+    minHeight: "100vh",
+    background: "#0a0a0a",
+    color: "#e5e5e5",
+    fontFamily: "'DM Mono', 'Fira Mono', 'Courier New', monospace",
+    position: "relative",
+    overflow: "hidden",
+  },
+  bgLines: {
+    position: "absolute",
+    inset: 0,
+    pointerEvents: "none",
+    zIndex: 0,
+  },
+  bgLine: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: "1px",
+    background: "linear-gradient(to bottom, transparent, #ffffff08 30%, #ffffff08 70%, transparent)",
+  },
+  container: {
+    position: "relative",
+    zIndex: 1,
+    maxWidth: "900px",
+    margin: "0 auto",
+    padding: "48px 32px",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    marginBottom: "32px",
+    gap: "24px",
+  },
+  headerLeft: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+  },
+  eyebrow: {
+    fontSize: "10px",
+    letterSpacing: "0.2em",
+    color: "#525252",
+    fontWeight: 500,
+  },
+  title: {
+    fontSize: "clamp(36px, 6vw, 60px)",
+    fontWeight: 700,
+    color: "#fafafa",
+    margin: 0,
+    letterSpacing: "-0.03em",
+    lineHeight: 1,
+    fontFamily: "'DM Serif Display', Georgia, serif",
+  },
+  headerRight: {
+    textAlign: "right",
+    flexShrink: 0,
+  },
+  subtitle: {
+    fontSize: "13px",
+    color: "#525252",
+    lineHeight: 1.6,
+    margin: 0,
+  },
+  divider: {
+    height: "1px",
+    background: "linear-gradient(to right, #a3e635, #38bdf8, transparent)",
+    marginBottom: "40px",
+    opacity: 0.5,
+  },
+  statsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: "16px",
+    marginBottom: "40px",
+  },
+  statCard: {
+    background: "#111111",
+    border: "1px solid #262626",
+    borderRadius: "4px",
+    padding: "24px",
+    position: "relative",
+    overflow: "hidden",
+    cursor: "default",
+    transition: "border-color 0.25s ease, transform 0.25s ease",
+  },
+  statTop: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
+  },
+  statTag: {
+    fontSize: "9px",
+    letterSpacing: "0.18em",
+    border: "1px solid",
+    padding: "2px 7px",
+    borderRadius: "2px",
+  },
+  statIconBox: {
+    width: "30px",
+    height: "30px",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  statValue: {
+    fontSize: "48px",
+    fontWeight: 700,
+    color: "#fafafa",
+    lineHeight: 1,
+    marginBottom: "6px",
+    fontFamily: "'DM Serif Display', Georgia, serif",
+    letterSpacing: "-0.02em",
+  },
+  statLabel: {
+    fontSize: "11px",
+    color: "#525252",
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+  },
+  statAccentBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    height: "2px",
+    transition: "width 0.35s ease",
+  },
+  activitySection: {
+    background: "#111111",
+    border: "1px solid #1c1c1c",
+    borderRadius: "4px",
+    overflow: "hidden",
+  },
+  activityHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "16px 24px",
+    borderBottom: "1px solid #1c1c1c",
+  },
+  activityTitleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  activityLabel: {
+    fontSize: "10px",
+    letterSpacing: "0.18em",
+    color: "#525252",
+    fontWeight: 500,
+  },
+  activityCount: {
+    fontSize: "10px",
+    color: "#404040",
+    letterSpacing: "0.05em",
+  },
+  activityList: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  activityRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
+    padding: "14px 24px",
+    borderBottom: "1px solid",
+    transition: "background 0.2s ease, border-color 0.2s ease",
+    cursor: "pointer",
+  },
+  activityDot: {
+    width: "6px",
+    height: "6px",
+    borderRadius: "50%",
+    flexShrink: 0,
+  },
+  activityMeta: {
+    flex: 1,
+    minWidth: 0,
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+  },
+  activityType: {
+    fontSize: "9px",
+    letterSpacing: "0.15em",
+    flexShrink: 0,
+    fontWeight: 600,
+  },
+  activityName: {
+    fontSize: "13px",
+    color: "#a3a3a3",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  activityRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    flexShrink: 0,
+  },
+  activityTime: {
+    fontSize: "11px",
+    color: "#404040",
+    letterSpacing: "0.05em",
+  },
+  emptyActivity: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    padding: "40px 24px",
+  },
+  emptyActivityDot: {
+    width: "6px",
+    height: "6px",
+    borderRadius: "50%",
+    background: "#333",
+    flexShrink: 0,
+  },
+  emptyActivityText: {
+    fontSize: "13px",
+    color: "#404040",
+    margin: 0,
+  },
+  emptyState: {
+    minHeight: "100vh",
+    background: "#0a0a0a",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "16px",
+    fontFamily: "'DM Mono', monospace",
+  },
+  emptyIcon: {
+    width: "56px",
+    height: "56px",
+    background: "#111",
+    border: "1px solid #262626",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyText: {
+    color: "#525252",
+    fontSize: "13px",
+    margin: 0,
+  },
+};
+
+const cssAnimations = `
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display&display=swap');
+
+  .stat-card-anim {
+    animation: fadeSlideUp 0.4s ease both;
+  }
+  .activity-row-anim {
+    animation: fadeIn 0.35s ease both;
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+`;
+
+export default DashboardPage;
