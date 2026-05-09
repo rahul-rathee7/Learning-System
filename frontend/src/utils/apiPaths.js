@@ -1,4 +1,4 @@
-export const BASE_URL = "http://13.61.154.110:8000";
+export const BASE_URL = "https://13.61.154.110.nip.io";
 
 export const API_PATHS = {
     AUTH: {

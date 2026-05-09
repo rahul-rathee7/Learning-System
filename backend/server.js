@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 8000;
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'http://13.61.154.110:8000'
+  'https://13.61.154.110.nip.io'
 ];
 
 app.use(cors(

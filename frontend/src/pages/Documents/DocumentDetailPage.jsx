@@ -42,7 +42,7 @@ const DocumentDetailPage = () => {
       return filePath;
     }
 
-    const baseUrl = import.meta.env.REACT_APP_API_URL || 'http://13.61.154.110:8000';
+    const baseUrl = import.meta.env.REACT_APP_API_URL || 'https://13.61.154.110.nip.io';
     return `${baseUrl}${filePath.startsWith('/') ? '' : '/'}${filePath}`;
   };
 
