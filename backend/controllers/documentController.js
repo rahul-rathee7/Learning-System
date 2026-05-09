@@ -27,7 +27,7 @@ export const uploadDocument = async (req, res, next) => {
             });
         }
 
-        const baseUrl = `http://localhost:${process.env.PORT || 8000}`;
+        const baseUrl = `http://13.61.154.110:${process.env.PORT || 8000}`;
         const fileUrl = `${baseUrl}/uploads/documents/${req.file.filename}`
 
         const document = await Document.create({

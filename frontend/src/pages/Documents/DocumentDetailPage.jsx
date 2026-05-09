@@ -42,7 +42,7 @@ const DocumentDetailPage = () => {
       return filePath;
     }
 
-    const baseUrl = import.meta.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const baseUrl = import.meta.env.REACT_APP_API_URL || 'http://13.61.154.110:8000';
     return `${baseUrl}${filePath.startsWith('/') ? '' : '/'}${filePath}`;
   };
 

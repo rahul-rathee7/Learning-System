@@ -23,6 +23,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://13.61.154.110'
+];
+
 app.use(cors(
     {
         origin: '*',
